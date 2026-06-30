@@ -38,8 +38,7 @@ public class Admin extends User{
                 courses.remove(course);
             } else {
                 var student = (Student) user;
-                var courses = student.getCourses();
-                courses.remove(course);
+                student.dropCourse(course);
             }
         }
         RegistrySystem.courseRegistry.remove(courseCode);
