@@ -21,6 +21,10 @@ public class Student extends User {
         course.removeStudent(this);
     }
 
+    public HashSet<Course> getCourses(){
+        return this.courses;
+    }
+
     public HashMap<String, Integer> getTranscript(){
         return this.academicTranscript;
     }

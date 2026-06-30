@@ -29,13 +29,19 @@ public class Admin extends User{
         RegistrySystem.userRegistry.remove(id);
     }
 
-    public void removeCourse(int id){
-        Course course = (Course) RegistrySystem.courseRegistry.get(id);
+    public void removeCourse(String courseCode){
+        Course course = RegistrySystem.courseRegistry.get(courseCode);
         for(User user : RegistrySystem.userRegistry.values()){
-            var professor = (Professor) user;
-            var courses = professor.getTeachingSchedule();
-            courses.remove(id);
+            if(Objects.equals(user.getRole(), Role.PROFESSOR)){
+                var professor = (Professor) user;
+                var courses = professor.getTeachingSchedule();
+                courses.remove(course);
+            } else {
+                var student = (Student) user;
+                var courses = student.getCourses();
+                courses.remove(course);
+            }
         }
-        RegistrySystem.userRegistry.remove(id);
+        RegistrySystem.courseRegistry.remove(courseCode);
     }
 }
