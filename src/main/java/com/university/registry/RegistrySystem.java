@@ -6,8 +6,8 @@ import main.java.com.university.model.User;
 import java.util.HashMap;
 
 public class RegistrySystem {
-    private HashMap<String, User> userRegistry;
-    private HashMap<String, Course> courseRegistry;
+    public static HashMap<Integer, User> userRegistry;
+    public static HashMap<String, Course> courseRegistry;
 
     private RegistrySystem() {}
 
@@ -20,25 +20,32 @@ public class RegistrySystem {
     }
 
     public void addUser(User user){
-        this.userRegistry.put(user.getId(), user);
+        userRegistry.put(user.getId(), user);
     }
 
-    public User getUser(String id){
-        return this.userRegistry.get(id);
+    public User getUser(int id){
+        return userRegistry.get(id);
     }
 
     public void addCourse(Course course){
-        this.courseRegistry.put(course.getCourseCode(), course);
+        courseRegistry.put(course.getCourseCode(), course);
     }
 
     public Course getCourse(String courseCode){
-        return this.courseRegistry.get(courseCode);
+        return courseRegistry.get(courseCode);
     }
 
     public void getAllCourses(){
-        for(String code : this.courseRegistry.keySet()){
-            var course = this.courseRegistry.get(code);
+        for(String code : courseRegistry.keySet()){
+            var course = courseRegistry.get(code);
             System.out.printf("- title: %s, code: %s, credits: %d, professor: %s, full: %b", course.getTitle(), course.getCourseCode(), course.getCredits(),course.getInstructor().getName(), course.isFull());
+        }
+    }
+
+    public void getAllUsers(){
+        for(int id : userRegistry.keySet()){
+            var user = userRegistry.get(id);
+            System.out.printf("- name: %s, id: %s, email: %s, password: %s, role: %s", user.getName(), user.getId(), user.getEmail(),user.getPass(), user.getRole());
         }
     }
 }
