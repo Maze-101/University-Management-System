@@ -1,6 +1,8 @@
 package main.java.com.university.model;
 
-import java.util.List;
+import main.java.com.university.registry.RegistrySystem;
+
+import java.util.ArrayList;
 
 public class Course {
     private final String courseCode;
@@ -8,13 +10,14 @@ public class Course {
     private final int credits;
     private final int maxCapacity;
     private Professor instructor;
-    private List<Student> enrolledStudents;
+    private ArrayList<Student> enrolledStudents = new ArrayList<Student>();
 
     public Course(String courseCode, String title, int credits, int maxCapacity) {
         this.courseCode = courseCode;
         this.title = title;
         this.credits = credits;
         this.maxCapacity = maxCapacity;
+        RegistrySystem.addCourse(this);
     }
 
     public String getCourseCode(){
@@ -33,14 +36,12 @@ public class Course {
         return this.credits;
     }
 
-    public boolean addStudent(Student student){
+    public void addStudent(Student student){
         enrolledStudents.add(student);
-        return true;
     }
 
-    public boolean removeStudent(Student student){
+    public void removeStudent(Student student){
         enrolledStudents.remove(student);
-        return true;
     }
 
     public void setInstructor(Professor professor){

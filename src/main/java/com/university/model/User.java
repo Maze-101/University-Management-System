@@ -1,5 +1,7 @@
 package main.java.com.university.model;
 
+import main.java.com.university.registry.RegistrySystem;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -18,6 +20,7 @@ public abstract class User {
         this.password = password;
         this.role = role;
         counter++;
+        RegistrySystem.addUser(this);
     }
 
     public boolean validateCredentials(String password, String email){

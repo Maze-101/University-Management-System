@@ -1,12 +1,13 @@
 package main.java.com.university.model;
 
 import main.java.com.university.model.User;
+import main.java.com.university.registry.RegistrySystem;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Professor extends User {
     private String department;
-    private List<Course> teachingSchedule;
+    private ArrayList<Course> teachingSchedule = new ArrayList<Course>();
 
     public Professor(String name, String email, String password) {
         super(name, email, password, Role.PROFESSOR);
@@ -14,9 +15,10 @@ public class Professor extends User {
 
     public void assignCourse(Course course){
         this.teachingSchedule.add(course);
+        course.setInstructor(this);
     }
 
-    public List<Course> getTeachingSchedule(){
+    public ArrayList<Course> getTeachingSchedule(){
         return this.teachingSchedule;
     }
 

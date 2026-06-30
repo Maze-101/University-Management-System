@@ -4,21 +4,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Student extends User {
-    private HashSet<Course> courses;
-    private HashMap<String, Integer> academicTranscript;
+    private HashSet<Course> courses = new HashSet<Course>();
+    private HashMap<String, Integer> academicTranscript = new HashMap<String, Integer>();
 
     public Student(String name, String email, String password) {
         super(name, email, password, Role.STUDENT);
     }
 
-    public boolean registerCourse(Course course){
-        courses.add(course);
-        return true;
+    public void registerCourse(Course course){
+        this.courses.add(course);
+        course.addStudent(this);
     }
 
-    public boolean dropCourse(Course course){
-        courses.remove(course);
-        return true;
+    public void dropCourse(Course course){
+        this.courses.remove(course);
+        course.removeStudent(this);
     }
 
     public HashMap<String, Integer> getTranscript(){
