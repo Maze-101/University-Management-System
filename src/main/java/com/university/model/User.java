@@ -50,7 +50,7 @@ public abstract class User {
     public void changeEmail(String newEmail) {
         Scanner s = new Scanner(System.in);
         while(true){
-            System.out.println("Enter password please: ");
+            System.out.print("Enter password please: ");
             String in = s.nextLine();
             if(!Objects.equals(this.password, in)){
                 System.out.println("Incorrect password!");
@@ -64,7 +64,7 @@ public abstract class User {
     public void changePassword(String newPassword) {
         Scanner s = new Scanner(System.in);
         while(true){
-            System.out.println("Enter password please: ");
+            System.out.print("Enter password please: ");
             String in = s.nextLine();
             if(!Objects.equals(this.password, in)){
                 System.out.println("Incorrect password!");

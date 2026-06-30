@@ -5,9 +5,9 @@ import main.java.com.university.model.User;
 
 import java.util.HashMap;
 
-public class RegistrySystem {
-    public static HashMap<Integer, User> userRegistry = new HashMap<Integer, User>();
-    public static HashMap<String, Course> courseRegistry = new HashMap<String, Course>();
+public final class RegistrySystem {
+    public static HashMap<Integer, User> userRegistry = new HashMap<>();
+    public static HashMap<String, Course> courseRegistry = new HashMap<>();
 
     private RegistrySystem() {}
 

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Student extends User {
-    private HashSet<Course> courses = new HashSet<Course>();
-    private HashMap<String, Integer> academicTranscript = new HashMap<String, Integer>();
+    private final HashSet<Course> courses = new HashSet<>();
+    private final HashMap<String, Integer> academicTranscript = new HashMap<>();
 
     public Student(String name, String email, String password) {
         super(name, email, password, Role.STUDENT);

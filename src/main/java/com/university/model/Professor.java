@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Professor extends User {
     private String department;
-    private ArrayList<Course> teachingSchedule = new ArrayList<Course>();
+    private final ArrayList<Course> teachingSchedule = new ArrayList<>();
 
     public Professor(String name, String email, String password) {
         super(name, email, password, Role.PROFESSOR);
