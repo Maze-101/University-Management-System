@@ -1,7 +1,9 @@
-package main.java.com.university.model;
+package main.java.com.university.registry;
+
+import main.java.com.university.model.Course;
+import main.java.com.university.model.User;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class RegistrySystem {
     private HashMap<String, User> userRegistry;
