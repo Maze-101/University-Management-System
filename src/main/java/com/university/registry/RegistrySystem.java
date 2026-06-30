@@ -9,6 +9,16 @@ public class RegistrySystem {
     private HashMap<String, User> userRegistry;
     private HashMap<String, Course> courseRegistry;
 
+    private RegistrySystem() {}
+
+    private static class RegistrySystemHolder {
+        private static final RegistrySystem INSTANCE = new RegistrySystem();
+    }
+
+    public static Object getInstance() {
+        return RegistrySystemHolder.INSTANCE;
+    }
+
     public void addUser(User user){
         this.userRegistry.put(user.getId(), user);
     }
