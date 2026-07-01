@@ -152,4 +152,49 @@ public final class InputReader {
         Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
         prof.assignCourse(RegistrySystem.getCourse(code));
     }
+
+    public static int profMenu(){
+        System.out.println("===========================================");
+        System.out.println("========     Welcome Professor     ========");
+        System.out.println("===========================================\n");
+
+        System.out.println("1. View assigned courses");
+        System.out.println("2. Assign grade to a student");
+        System.out.println("3. Log out\n");
+
+        System.out.print("Enter Operation Number [1,2,3]: ");
+        int choice;
+        while(true){
+            try {
+                choice = s.nextInt();
+                if(choice < 1 || choice > 3){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.print("Invalid operation, Please Try again: ");
+            }
+        }
+        return choice;
+    }
+
+    public static void viewAssignedCourses(){
+        int id;
+        while(true){
+            try {
+                System.out.print("Enter your ID, Professor: ");
+                id = s.nextInt();
+                if(id < 1){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid ID:");
+            }
+        }
+        Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
+        for(var course : prof.getTeachingSchedule()){
+            System.out.printf("title : %s, course code : %s", course.getTitle(), course.getCourseCode());
+        }
+    }
 }

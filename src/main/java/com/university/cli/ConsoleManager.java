@@ -37,17 +37,31 @@ public final class ConsoleManager {
 
                 System.out.println("===========================================\n");
 
-                if(adminChoice == 1 || adminChoice == 2){
-                    InputReader.addUser();
-                } else if(adminChoice == 3) {
-                    InputReader.addCourse();
-                } else if (adminChoice == 4) {
-                    InputReader.assignProfToCourse();
-                } else {
-                    break;
+                while(true){
+                    if(adminChoice == 1 || adminChoice == 2){
+                        InputReader.addUser();
+                    } else if(adminChoice == 3) {
+                        InputReader.addCourse();
+                    } else if (adminChoice == 4) {
+                        InputReader.assignProfToCourse();
+                    } else {
+                        break;
+                    }
                 }
             } else if (Objects.equals(user.getRole(), PROFESSOR)){
+                int profChoice = InputReader.profMenu();
 
+                System.out.println("===========================================\n");
+
+                while(true){
+                    if(profChoice == 1){
+                        InputReader.viewAssignedCourses();
+                    } else if(profChoice == 2) {
+                        InputReader.assignGrade();
+                    } else {
+                        break;
+                    }
+                }
             } else {
 
             }
