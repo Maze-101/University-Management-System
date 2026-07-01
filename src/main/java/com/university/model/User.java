@@ -23,8 +23,8 @@ public abstract class User {
         RegistrySystem.addUser(this);
     }
 
-    public boolean validateCredentials(String password, String email){
-        return Objects.equals(this.email, email) && Objects.equals(this.password, password);
+    public boolean validateCredentials(String password, int id){
+        return Objects.equals(this.id, id) && Objects.equals(this.password, password);
     }
 
     public int getId() {

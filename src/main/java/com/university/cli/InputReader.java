@@ -1,5 +1,11 @@
 package main.java.com.university.cli;
 
+import main.java.com.university.model.Professor;
+import main.java.com.university.model.Role;
+import main.java.com.university.model.Student;
+import main.java.com.university.model.User;
+import main.java.com.university.registry.RegistrySystem;
+
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -30,30 +36,85 @@ public final class InputReader {
         return InputReader.choice;
     }
 
-    public static String roleMenu(){
-        System.out.println("===========================================");
-        System.out.println("What's your role ?");
-        System.out.println("1. Admin");
-        System.out.println("2. Professor");
-        System.out.println("3. Student\n");
-        System.out.print("Role: ");
-        while(true){
-            InputReader.incorrect = true;
+    public static User userValidation(){
+        int id;
+        String password;
+        int counter = 0;
+        User user = null;
+        boolean validated = false;
+        while(counter++ < 3){
             try {
-                InputReader.choice = s.nextLine().toLowerCase();
-                if(!InputReader.choice.equals("admin") && !InputReader.choice.equals("student") && !InputReader.choice.equals("professor")){
+                System.out.print("Enter ID: ");
+                id = s.nextInt();
+                System.out.print("Enter password");
+                password = s.nextLine();
+                user = RegistrySystem.userRegistry.get(id);
+                if(user == null || !user.validateCredentials(password, id)){
                     throw new InputMismatchException();
                 }
-                InputReader.incorrect = false;
+                validated = true;
             } catch(InputMismatchException e){
-                System.out.print("Invalid role, Please try again: ");
-            }
-
-            if(!InputReader.incorrect){
-                break;
+                System.out.println("Wrong credentials, Please try again.");
             }
         }
+        return (validated ? user : null);
+    }
 
+    public static int adminMenu(){
+        System.out.println("===========================================");
+        System.out.println("========       Welcome Admin       ========");
+        System.out.println("===========================================\n");
+
+        System.out.println("1. Add Student");
+        System.out.println("2. Add Professor");
+        System.out.println("3. Add Course");
+        System.out.println("4. Assign Professor to Course");
+        System.out.println("5. Log out\n");
+
+        System.out.print("Enter Operation Number [1,2,3,4,5]: ");
+        int choice;
+        while(true){
+            try {
+                choice = s.nextInt();
+                if(choice < 1 || choice > 5){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.print("Invalid operation, Please Try again: ");
+            }
+        }
         return choice;
+    }
+
+    public static void userDetails(){
+        System.out.println("Please enter student details");
+        String name = "", email = "", password = "", role = "";
+        while(true){
+            try {
+                System.out.print("Enter name: ");
+                name = s.nextLine();
+                System.out.print("Enter email: ");
+                email = s.nextLine();
+                System.out.print("Enter password: ");
+                password = s.nextLine();
+                System.out.print("Enter role: ");
+                role = s.nextLine().toUpperCase();
+                if(!role.equals("PROFESSOR") && !role.equals("STUDENT")){
+                    throw new InputMismatchException();
+                }
+            } catch(InputMismatchException e){
+                System.out.println("Invalid information, student details should be a string.");
+            }
+
+            User user;
+            if(role.equals("PROFESSOR")){
+                user = new Professor(name, email, password);
+            } else {
+                user = new Student(name, email, password);
+            }
+            RegistrySystem.addUser(user);
+            break;
+        }
     }
 }
