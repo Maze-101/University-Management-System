@@ -9,23 +9,22 @@ import java.util.Scanner;
 
 public final class SystemFunctions {
     static Scanner s = new Scanner(System.in);
-    static String choice = "";
-    static boolean incorrect;
+
     public static String login(){
-        int counter = 0;
+        String choice;
         System.out.print("Login or Exit ? : ");
-        while(counter++ < 3){
+        while(true){
             try {
-                SystemFunctions.choice = s.nextLine().toLowerCase();
-                if(!Objects.equals(SystemFunctions.choice, "login") && !Objects.equals(SystemFunctions.choice, "exit")){
+                choice = s.nextLine().toLowerCase();
+                if(!Objects.equals(choice, "login") && !Objects.equals(choice, "exit")){
                     throw new InputMismatchException();
                 }
+                break;
             } catch(InputMismatchException e){
                 System.out.print("Invalid option, Please try again: ");
             }
         }
-
-        return SystemFunctions.choice;
+        return choice.toLowerCase();
     }
 
     public static User userValidation(){
@@ -38,49 +37,55 @@ public final class SystemFunctions {
             try {
                 System.out.print("Enter ID: ");
                 id = s.nextInt();
-                System.out.print("Enter password");
+                s.nextLine(); // Flush the trailing newline left by nextInt()
+
+                System.out.print("Enter password: ");
                 password = s.nextLine();
+
                 user = RegistrySystem.userRegistry.get(id);
                 if(user == null || !user.validateCredentials(password, id)){
                     throw new InputMismatchException();
                 }
                 validated = true;
+                break; // Break the retry loop on success
             } catch(InputMismatchException e){
                 System.out.println("Wrong credentials, Please try again.");
+                s.nextLine(); // Clear the buffer to prevent infinite loop if input was text
             }
         }
         return (validated ? user : null);
     }
 
     public static int adminMenu(){
-        System.out.println("===========================================");
+        System.out.println("\n===========================================");
         System.out.println("========       Welcome Admin       ========");
         System.out.println("===========================================\n");
 
-        System.out.println("1. Add Student");
-        System.out.println("2. Add Professor");
-        System.out.println("3. Add Course");
-        System.out.println("4. Assign Professor to Course");
-        System.out.println("5. Log out\n");
+        System.out.println("1. Add user");
+        System.out.println("2. Add Course");
+        System.out.println("3. Assign Professor to Course");
+        System.out.println("4. Log out\n");
 
         System.out.print("Enter Operation Number [1,2,3,4,5]: ");
         int choice;
         while(true){
             try {
                 choice = s.nextInt();
+                s.nextLine(); // Flush trailing newline
                 if(choice < 1 || choice > 5){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
                 System.out.print("Invalid operation, Please Try again: ");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         return choice;
     }
 
     public static void addUser(){
-        System.out.println("Please enter student details");
+        System.out.println("Please enter user details");
         String name, email, password, role;
         while(true){
             try {
@@ -90,14 +95,14 @@ public final class SystemFunctions {
                 email = s.nextLine();
                 System.out.print("Enter password: ");
                 password = s.nextLine();
-                System.out.print("Enter role: ");
+                System.out.print("Enter role (PROFESSOR/STUDENT): ");
                 role = s.nextLine().toUpperCase();
                 if(!role.equals("PROFESSOR") && !role.equals("STUDENT")){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
-                System.out.println("Invalid information, student details should be a string.");
+                System.out.println("Invalid information, role details should match the options.");
             }
         }
         if(role.equals("PROFESSOR")){
@@ -121,12 +126,15 @@ public final class SystemFunctions {
                 credits = s.nextInt();
                 System.out.print("Enter maxCapacity: ");
                 maxCapacity = s.nextInt();
+                s.nextLine(); // Flush trailing newline
+
                 if(maxCapacity < 20 || credits < 2){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
-                System.out.println("Invalid course information");
+                System.out.println("Invalid course information. Try again.");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         new Course(courseCode, title, credits, maxCapacity);
@@ -139,6 +147,8 @@ public final class SystemFunctions {
             try {
                 System.out.print("Enter Professor ID: ");
                 id = s.nextInt();
+                s.nextLine(); // Flush trailing newline
+
                 System.out.print("Enter Course code: ");
                 code = s.nextLine();
                 if(id < 1){
@@ -147,6 +157,7 @@ public final class SystemFunctions {
                 break;
             } catch(InputMismatchException e){
                 System.out.println("Invalid information, Please try again.");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
@@ -154,7 +165,7 @@ public final class SystemFunctions {
     }
 
     public static int profMenu(){
-        System.out.println("===========================================");
+        System.out.println("\n===========================================");
         System.out.println("========     Welcome Professor     ========");
         System.out.println("===========================================\n");
 
@@ -167,12 +178,14 @@ public final class SystemFunctions {
         while(true){
             try {
                 choice = s.nextInt();
+                s.nextLine(); // Flush trailing newline
                 if(choice < 1 || choice > 3){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
                 System.out.print("Invalid operation, Please Try again: ");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         return choice;
@@ -184,17 +197,19 @@ public final class SystemFunctions {
             try {
                 System.out.print("Enter your ID, Professor: ");
                 id = s.nextInt();
+                s.nextLine(); // Flush trailing newline
                 if(id < 1){
                     throw new InputMismatchException();
                 }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid ID:");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
         for(var course : prof.getTeachingSchedule()){
-            System.out.printf("title : %s, course code : %s", course.getTitle(), course.getCourseCode());
+            System.out.printf("title : %s, course code : %s\n", course.getTitle(), course.getCourseCode());
         }
     }
 
@@ -209,16 +224,22 @@ public final class SystemFunctions {
                 System.out.println("Enter student ID, course code, and marks");
                 System.out.print("ID: ");
                 sId = s.nextInt();
-                System.out.println("Course code: ");
+                s.nextLine(); // Flush trailing newline before nextLine()
+
+                System.out.print("Course code: ");
                 courseCode = s.nextLine();
-                System.out.println("Marks: ");
+
+                System.out.print("Marks: ");
                 marks = s.nextInt();
+                s.nextLine(); // Flush trailing newline
+
                 if(sId < 1 || profId < 1 || marks < 0){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
                 System.out.println("Invalid information, Please try again.");
+                s.nextLine(); // Clear bad input buffer
             }
         }
 
@@ -229,7 +250,7 @@ public final class SystemFunctions {
     }
 
     public static int stuMenu(){
-        System.out.println("===========================================");
+        System.out.println("\n===========================================");
         System.out.println("=========     Welcome Student     =========");
         System.out.println("===========================================\n");
 
@@ -243,12 +264,14 @@ public final class SystemFunctions {
         while(true){
             try {
                 choice = s.nextInt();
+                s.nextLine(); // Flush trailing newline
                 if(choice < 1 || choice > 4){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
                 System.out.print("Invalid operation, Please Try again: ");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         return choice;
@@ -265,6 +288,8 @@ public final class SystemFunctions {
             try {
                 System.out.print("Enter your ID, Student: ");
                 sId = s.nextInt();
+                s.nextLine(); // Flush trailing newline before nextLine()
+
                 System.out.print("Enter course code: ");
                 courseCode = s.nextLine();
                 if(sId < 1){
@@ -273,6 +298,7 @@ public final class SystemFunctions {
                 break;
             } catch(InputMismatchException e){
                 System.out.println("Invalid information, Please try again");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         Student stu = (Student) RegistrySystem.userRegistry.get(sId);
@@ -286,18 +312,20 @@ public final class SystemFunctions {
             try {
                 System.out.print("Enter your ID, Student: ");
                 sId = s.nextInt();
+                s.nextLine(); // Flush trailing newline
                 if(sId < 1){
                     throw new InputMismatchException();
                 }
                 break;
             } catch(InputMismatchException e){
                 System.out.println("Invalid information, Please try again");
+                s.nextLine(); // Clear bad input buffer
             }
         }
         Student stu = (Student) RegistrySystem.userRegistry.get(sId);
         var transcript = stu.getTranscript();
         for(var course : transcript.keySet()){
-            System.out.printf("%s : %d", course, transcript.get(course));
+            System.out.printf("%s : %d\n", course, transcript.get(course));
         }
     }
 }

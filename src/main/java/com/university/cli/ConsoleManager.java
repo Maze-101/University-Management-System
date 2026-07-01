@@ -31,27 +31,27 @@ public final class ConsoleManager {
             System.out.println("===========================================\n");
 
             if(Objects.equals(user.getRole(), ADMIN)){
-                int adminChoice = SystemFunctions.adminMenu();
-
-                System.out.println("===========================================\n");
-
                 while(true){
-                    if(adminChoice == 1 || adminChoice == 2){
+                    int adminChoice = SystemFunctions.adminMenu();
+
+                    System.out.println("===========================================\n");
+
+                    if(adminChoice == 1){
                         SystemFunctions.addUser();
-                    } else if(adminChoice == 3) {
+                    } else if(adminChoice == 2) {
                         SystemFunctions.addCourse();
-                    } else if (adminChoice == 4) {
+                    } else if (adminChoice == 3) {
                         SystemFunctions.assignProfToCourse();
                     } else {
                         break;
                     }
                 }
             } else if (Objects.equals(user.getRole(), PROFESSOR)){
-                int profChoice = SystemFunctions.profMenu();
-
-                System.out.println("===========================================\n");
-
                 while(true){
+                    int profChoice = SystemFunctions.profMenu();
+
+                    System.out.println("===========================================\n");
+
                     if(profChoice == 1){
                         SystemFunctions.viewAssignedCourses();
                     } else if(profChoice == 2) {
@@ -61,11 +61,11 @@ public final class ConsoleManager {
                     }
                 }
             } else {
-                int stuChoice = SystemFunctions.stuMenu();
-
-                System.out.println("===========================================\n");
-
                 while(true){
+                    int stuChoice = SystemFunctions.stuMenu();
+
+                    System.out.println("===========================================\n");
+
                     if(stuChoice == 1){
                         SystemFunctions.viewAvailableCourses();
                     } else if(stuChoice == 2) {
