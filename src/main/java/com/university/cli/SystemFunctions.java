@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public final class InputReader {
+public final class SystemFunctions {
     static Scanner s = new Scanner(System.in);
     static String choice = "";
     static boolean incorrect;
@@ -16,8 +16,8 @@ public final class InputReader {
         System.out.print("Login or Exit ? : ");
         while(counter++ < 3){
             try {
-                InputReader.choice = s.nextLine().toLowerCase();
-                if(!Objects.equals(InputReader.choice, "login") && !Objects.equals(InputReader.choice, "exit")){
+                SystemFunctions.choice = s.nextLine().toLowerCase();
+                if(!Objects.equals(SystemFunctions.choice, "login") && !Objects.equals(SystemFunctions.choice, "exit")){
                     throw new InputMismatchException();
                 }
             } catch(InputMismatchException e){
@@ -25,7 +25,7 @@ public final class InputReader {
             }
         }
 
-        return InputReader.choice;
+        return SystemFunctions.choice;
     }
 
     public static User userValidation(){
@@ -121,7 +121,7 @@ public final class InputReader {
                 credits = s.nextInt();
                 System.out.print("Enter maxCapacity: ");
                 maxCapacity = s.nextInt();
-                if(maxCapacity < 20 && credits < 2){
+                if(maxCapacity < 20 || credits < 2){
                     throw new InputMismatchException();
                 }
                 break;
@@ -195,6 +195,109 @@ public final class InputReader {
         Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
         for(var course : prof.getTeachingSchedule()){
             System.out.printf("title : %s, course code : %s", course.getTitle(), course.getCourseCode());
+        }
+    }
+
+    public static void assignGrade(){
+        int sId, profId;
+        String courseCode;
+        int marks;
+        while(true){
+            try {
+                System.out.print("Enter your ID, Professor: ");
+                profId = s.nextInt();
+                System.out.println("Enter student ID, course code, and marks");
+                System.out.print("ID: ");
+                sId = s.nextInt();
+                System.out.println("Course code: ");
+                courseCode = s.nextLine();
+                System.out.println("Marks: ");
+                marks = s.nextInt();
+                if(sId < 1 || profId < 1 || marks < 0){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("Invalid information, Please try again.");
+            }
+        }
+
+        Professor prof = (Professor) RegistrySystem.userRegistry.get(profId);
+        Student stu = (Student) RegistrySystem.userRegistry.get(sId);
+        Course course = RegistrySystem.courseRegistry.get(courseCode);
+        prof.submitGrade(stu, course, marks);
+    }
+
+    public static int stuMenu(){
+        System.out.println("===========================================");
+        System.out.println("=========     Welcome Student     =========");
+        System.out.println("===========================================\n");
+
+        System.out.println("1. View available courses");
+        System.out.println("2. Register a course");
+        System.out.println("3. View transcript");
+        System.out.println("4. Log out\n");
+
+        System.out.print("Enter Operation Number [1,2,3,4]: ");
+        int choice;
+        while(true){
+            try {
+                choice = s.nextInt();
+                if(choice < 1 || choice > 4){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.print("Invalid operation, Please Try again: ");
+            }
+        }
+        return choice;
+    }
+
+    public static void viewAvailableCourses(){
+        RegistrySystem.getAllCourses();
+    }
+
+    public static void registerCourse(){
+        int sId;
+        String courseCode;
+        while(true){
+            try {
+                System.out.print("Enter your ID, Student: ");
+                sId = s.nextInt();
+                System.out.print("Enter course code: ");
+                courseCode = s.nextLine();
+                if(sId < 1){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("Invalid information, Please try again");
+            }
+        }
+        Student stu = (Student) RegistrySystem.userRegistry.get(sId);
+        Course course = RegistrySystem.courseRegistry.get(courseCode);
+        stu.registerCourse(course);
+    }
+
+    public static void viewTranscript(){
+        int sId;
+        while(true){
+            try {
+                System.out.print("Enter your ID, Student: ");
+                sId = s.nextInt();
+                if(sId < 1){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("Invalid information, Please try again");
+            }
+        }
+        Student stu = (Student) RegistrySystem.userRegistry.get(sId);
+        var transcript = stu.getTranscript();
+        for(var course : transcript.keySet()){
+            System.out.printf("%s : %d", course, transcript.get(course));
         }
     }
 }

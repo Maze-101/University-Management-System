@@ -1,8 +1,6 @@
 package main.java.com.university.cli;
 
-import main.java.com.university.model.Admin;
 import main.java.com.university.model.User;
-import main.java.com.university.registry.RegistrySystem;
 
 import java.util.Objects;
 
@@ -15,7 +13,7 @@ public final class ConsoleManager {
             System.out.println("======== Welcome to our university ========");
             System.out.println("===========================================\n");
 
-            String choice = InputReader.login();
+            String choice = SystemFunctions.login();
 
             if(choice.equals("exit")){
                 System.out.println("Exiting System, Goodbye :)");
@@ -24,7 +22,7 @@ public final class ConsoleManager {
 
             System.out.println("===========================================\n");
 
-            User user = InputReader.userValidation();
+            User user = SystemFunctions.userValidation();
 
             if(user == null){
                 break;
@@ -33,37 +31,51 @@ public final class ConsoleManager {
             System.out.println("===========================================\n");
 
             if(Objects.equals(user.getRole(), ADMIN)){
-                int adminChoice = InputReader.adminMenu();
+                int adminChoice = SystemFunctions.adminMenu();
 
                 System.out.println("===========================================\n");
 
                 while(true){
                     if(adminChoice == 1 || adminChoice == 2){
-                        InputReader.addUser();
+                        SystemFunctions.addUser();
                     } else if(adminChoice == 3) {
-                        InputReader.addCourse();
+                        SystemFunctions.addCourse();
                     } else if (adminChoice == 4) {
-                        InputReader.assignProfToCourse();
+                        SystemFunctions.assignProfToCourse();
                     } else {
                         break;
                     }
                 }
             } else if (Objects.equals(user.getRole(), PROFESSOR)){
-                int profChoice = InputReader.profMenu();
+                int profChoice = SystemFunctions.profMenu();
 
                 System.out.println("===========================================\n");
 
                 while(true){
                     if(profChoice == 1){
-                        InputReader.viewAssignedCourses();
+                        SystemFunctions.viewAssignedCourses();
                     } else if(profChoice == 2) {
-                        InputReader.assignGrade();
+                        SystemFunctions.assignGrade();
                     } else {
                         break;
                     }
                 }
             } else {
+                int stuChoice = SystemFunctions.stuMenu();
 
+                System.out.println("===========================================\n");
+
+                while(true){
+                    if(stuChoice == 1){
+                        SystemFunctions.viewAvailableCourses();
+                    } else if(stuChoice == 2) {
+                        SystemFunctions.registerCourse();
+                    } else if (stuChoice == 3) {
+                        SystemFunctions.viewTranscript();
+                    } else {
+                        break;
+                    }
+                }
             }
 
         }
