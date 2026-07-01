@@ -33,19 +33,18 @@ public final class ConsoleManager {
             System.out.println("===========================================\n");
 
             if(Objects.equals(user.getRole(), ADMIN)){
-                Admin admin = (Admin) user;
                 int adminChoice = InputReader.adminMenu();
 
                 System.out.println("===========================================\n");
 
                 if(adminChoice == 1 || adminChoice == 2){
-                    InputReader.userDetails();
+                    InputReader.addUser();
                 } else if(adminChoice == 3) {
-
+                    InputReader.addCourse();
                 } else if (adminChoice == 4) {
-
+                    InputReader.assignProfToCourse();
                 } else {
-
+                    break;
                 }
             } else if (Objects.equals(user.getRole(), PROFESSOR)){
 

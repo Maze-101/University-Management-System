@@ -1,9 +1,6 @@
 package main.java.com.university.cli;
 
-import main.java.com.university.model.Professor;
-import main.java.com.university.model.Role;
-import main.java.com.university.model.Student;
-import main.java.com.university.model.User;
+import main.java.com.university.model.*;
 import main.java.com.university.registry.RegistrySystem;
 
 import java.util.InputMismatchException;
@@ -15,21 +12,16 @@ public final class InputReader {
     static String choice = "";
     static boolean incorrect;
     public static String login(){
+        int counter = 0;
         System.out.print("Login or Exit ? : ");
-        while(true){
-            InputReader.incorrect = true;
+        while(counter++ < 3){
             try {
                 InputReader.choice = s.nextLine().toLowerCase();
                 if(!Objects.equals(InputReader.choice, "login") && !Objects.equals(InputReader.choice, "exit")){
                     throw new InputMismatchException();
                 }
-                InputReader.incorrect = false;
             } catch(InputMismatchException e){
                 System.out.print("Invalid option, Please try again: ");
-            }
-
-            if(!InputReader.incorrect){
-                break;
             }
         }
 
@@ -87,9 +79,9 @@ public final class InputReader {
         return choice;
     }
 
-    public static void userDetails(){
+    public static void addUser(){
         System.out.println("Please enter student details");
-        String name = "", email = "", password = "", role = "";
+        String name, email, password, role;
         while(true){
             try {
                 System.out.print("Enter name: ");
@@ -103,18 +95,61 @@ public final class InputReader {
                 if(!role.equals("PROFESSOR") && !role.equals("STUDENT")){
                     throw new InputMismatchException();
                 }
+                break;
             } catch(InputMismatchException e){
                 System.out.println("Invalid information, student details should be a string.");
             }
-
-            User user;
-            if(role.equals("PROFESSOR")){
-                user = new Professor(name, email, password);
-            } else {
-                user = new Student(name, email, password);
-            }
-            RegistrySystem.addUser(user);
-            break;
         }
+        if(role.equals("PROFESSOR")){
+            new Professor(name, email, password);
+        } else {
+            new Student(name, email, password);
+        }
+    }
+
+    public static void addCourse(){
+        System.out.println("Please enter course details");
+        String courseCode, title;
+        int credits, maxCapacity;
+        while(true){
+            try {
+                System.out.print("Enter code: ");
+                courseCode = s.nextLine();
+                System.out.print("Enter title: ");
+                title = s.nextLine();
+                System.out.print("Enter credits: ");
+                credits = s.nextInt();
+                System.out.print("Enter maxCapacity: ");
+                maxCapacity = s.nextInt();
+                if(maxCapacity < 20 && credits < 2){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("Invalid course information");
+            }
+        }
+        new Course(courseCode, title, credits, maxCapacity);
+    }
+
+    public static void assignProfToCourse(){
+        System.out.println("Please enter Professor ID and Course code");
+        int id; String code;
+        while(true){
+            try {
+                System.out.print("Enter Professor ID: ");
+                id = s.nextInt();
+                System.out.print("Enter Course code: ");
+                code = s.nextLine();
+                if(id < 1){
+                    throw new InputMismatchException();
+                }
+                break;
+            } catch(InputMismatchException e){
+                System.out.println("Invalid information, Please try again.");
+            }
+        }
+        Professor prof = (Professor) RegistrySystem.userRegistry.get(id);
+        prof.assignCourse(RegistrySystem.getCourse(code));
     }
 }
