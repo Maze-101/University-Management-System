@@ -10,8 +10,6 @@ The application is structured into modular layers to maintain a clean separation
     
 - **`registry/` (In-Memory Database Layer):** Implements a centralized, thread-safe data context using the **Singleton Pattern**. It acts as the local system cache, organizing data using fast lookup maps (`Map<String, User>` and `Map<String, Course>`).
     
-- **`service/` (Business Logic Layer):** Translates user requests into functional changes. It isolates data validation policies, capacity tracking mechanisms, and relational consistency controls away from the user interface.
-    
 - **`cli/` (Presentation & I/O Validation Layer):** Controls terminal routing matrices, display menus, and input stream reading. It features a hardened parser mechanism that traps data mismatch anomalies defensively to prevent crash scenarios.
 
 
